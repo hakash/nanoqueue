@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="nanoqueue.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  
+	<title>NanoQueue - The minimal PubSub for your modules</title>
+</head>
+<body>
+	<div id="info" class="panel">
+      <ul class="nav"><li><a href="index.html">Home</a></li><li><a href="example.html">Example</a></li></ul>
+      <h1>Welcome!</h1>
+		<p>Imagine Alice creates a module for fetching calendar data from
+			a Microsoft Exchange Web Service API. However, she's not very good
+			at UI, and let's the module be used as a library, rather than bind
+			it to UI components.
+		</p>
+		<p>Along comes Bob. He's an expert in creating traditionally laid out
+			calendar UI's, but thinks Ajax, web-API's and authentication is
+			difficult to work with. He just wants to subscribe to live events 
+			from the calendar to keep the UI up to date.
+		</p>
+		<p>If Alice and Bob add the option to communicate through NanoQueue,
+			they will be able to communicate with eachother's modules, even though they 
+			have never talked or met. This means that you can use both of their
+			modules on your page, with minimal setup, and have them communicate
+			messages. 
+		</p>
+		<p>Let's see some code:</p>
+<pre>
+// Include on the page in the header, before any modules
+&lt;head&gt;
+	...
+	&lt;script src="nanoqueue.js"&gt;&lt;/script&gt;
+	&lt;script src="moduleA.js"&gt;&lt;/script&gt;
+	&lt;script src="moduleB.js"&gt;&lt;/script&gt;
+	...
+&lt;/head&gt;
+...
+</pre>
+		<p>A module could use it like this:</p>
+<pre>
+var ModuleA = function(){
+
+	// Get the global Singleton instance object
+	var q = NanoQueue.getInstance();
+
+	// Subscribe to the specified topic, supplying the callback
+	q.subscribeTo("calendar.data.new", this.updateUI);
+	
+	// message handler function
+	var updateUI = function(data){
+		// do some important UI stuff
+		document.querySelector("#result").innerText(JSON.stringify(data, null,'\t'));
+	}
+}
+</pre>
+<p>Or:</p>
+<pre>
+var ModuleB = function(){
+
+	// Get the global Singleton instance object
+	var q = NanoQueue.getInstance();
+
+	var doStuff = function(someInput){
+
+		// Do some useful stuff to the input and build an object to share
+		// lets pretend we have gotten som data from a calendar service
+		var message = {
+			data : {
+				"bookings": [ someInput ],
+			},
+			"created" : new Date().toISOString()
+		};
+
+		// Publish to the specified topic, supplying the data
+		q.publishTo("calendar.data.new", message);	
+	}
+}
+</pre>
+	</div>
+</body>
+</html>
