@@ -4,8 +4,22 @@ var ModuleB = (function(){
 	return new function(){
 		// message handler function
 		this.updateUI = function(data){
+
+			var selector = "#moduleB .result code";
+			var encodedData = JSON.stringify(data, null,'\t');
 			// do some important UI stuff, in this example we'll just display as JSON
-			document.querySelector("#moduleB .result").innerHTML = JSON.stringify(data, null,'\t');
+			document.querySelector(selector).innerHTML = encodedData;
+			
+			// notify the world that we updated someting
+			var data = {
+				node : {
+					selector : selector,
+					newValue : encodedData
+				},
+				canHighlight : true
+			};
+			
+			_Q.getInstance().publishTo("dom.node.change", data);
 		}
 
 		// Get the global Singleton instance object

@@ -31,6 +31,7 @@ body {
 	width: 800px;
 	display: block;
 	margin-top: 25px;
+	margin-bottom: 25px;
 }
 
 .source {
@@ -84,6 +85,22 @@ pre {
 	tab-size: 4;
 	overflow: scroll;
 	max-height: 500px;
+}
+
+button {
+	box-sizing: border-box;
+	border: 2px solid rgb(45, 86, 112);
+	background-color: #4880A5;
+	padding: 10px 20px;
+	color: white;
+	font-weight: bold;
+	font-variant: small-caps;
+	font-size: 1em;
+}
+
+.btn-small {
+	font-size: 0.7em;
+	padding: 5px 10px;
 }
 
 .sourcePane {

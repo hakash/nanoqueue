@@ -6,8 +6,10 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="nanoqueue.js"></script>
   <link rel="stylesheet" href="styles.css">
-  
-	<title>NanoQueue - The minimal PubSub for your modules</title>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/sunburst.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <title>NanoQueue - The minimal PubSub for your modules</title>
 </head>
 <body>
 	<div id="info" class="panel">
@@ -31,7 +33,7 @@
 		</p>
 		<p>Let's see some code:</p>
 <pre>
-// Include on the page in the header, before any modules
+<code class="html">// Include on the page in the header, before any modules
 &lt;head&gt;
 	...
 	&lt;script src="nanoqueue.js"&gt;&lt;/script&gt;
@@ -40,10 +42,10 @@
 	...
 &lt;/head&gt;
 ...
-</pre>
+</code></pre>
 		<p>A module could use it like this:</p>
 <pre>
-var ModuleA = function(){
+<code class="javascript">var ModuleA = function(){
 
 	// Get the global Singleton instance object
 	var q = NanoQueue.getInstance();
@@ -57,10 +59,10 @@ var ModuleA = function(){
 		document.querySelector("#result").innerText(JSON.stringify(data, null,'\t'));
 	}
 }
-</pre>
+</code></pre>
 <p>Or:</p>
 <pre>
-var ModuleB = function(){
+<code class="javascript">var ModuleB = function(){
 
 	// Get the global Singleton instance object
 	var q = NanoQueue.getInstance();
@@ -80,7 +82,7 @@ var ModuleB = function(){
 		q.publishTo("calendar.data.new", message);	
 	}
 }
-</pre>
+</code></pre>
 	</div>
 </body>
 </html>
