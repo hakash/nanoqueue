@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="nanoqueue.js"></script>
+	<script src="modulea.js"></script>
+	<script src="moduleb.js"></script>
+	<script src="hljs-module.js"></script>
+	<title>NanoQueue Example</title>
+	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/sunburst.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	<script>
+		function toggle(target){
+			var element = document.getElementById(target);
+			var state = window.getComputedStyle(element).getPropertyValue("display");
+			if(state === "none"){
+				element.style.display = "block";
+				element.innerHTML = element.innerHTML.replace("See","Hide");
+			}
+			else {
+				element.style.display = "";
+				element.innerHTML = element.innerHTML.replace("Hide","See");
+			}
+		}
+
+	</script>
+</head>
+<body>
+	<div id="info" class="panel">
+      <ul class="nav"><li><a href="index.html">Home</a></li><li><a href="example.html">Example</a></li></ul>
+		<h1>NanoQueue Example</h1>
+		<p>This example will show how to use NanoQueue to decouple your 
+			components, or allow different modules, which are not aware
+      		of each other, to communicate through messages. This will allow 
+      		you, or the community at large, to create some
+			standard or commonly named messages one can publish or subscribe
+			to.
+		</p>
+		<p>
+			Use the components below to demonstrate the messages being sent.
+		</p>
+	</div>
+	<div id="moduleA" class="panel module">
+		<h2>Module A</h2>
+		<p>
+			I'm publishing to the topic "calendar.data.new"!
+		</p>
+		<button type="button" onclick="ModuleA.doStuff()">Do Stuff</button>
+		<div class="sourcePane">
+			<button type="button" class="btn-small" onclick="toggle('modulea_code')">See my code</button>
+			<pre id="modulea_code" class="source">
+				<code class="javascript">
+var ModuleA = (function(){
+	
+	return new function(){
+
+		// Get the global Singleton instance object
+		// You can also use NanoQueue.getInstance()
+		this.q = _Q.getInstance();
+
+		this.publishNewBooking = function(booking){
+
+			// Sample standardized format for new calendar bookings messages
+			var message = {
+				data : {
+					"bookings": [ booking ],
+				},
+				"created" : new Date().toISOString()
+			};
+
+			// Publish to the specified topic, supplying the data
+			this.q.publishTo("calendar.data.new", message);	
+		}
+
+		this.doStuff = function(){
+			// Do some useful stuff to the input and build an object to share
+			// lets pretend we have gotten som data from a calendar service
+			var d = new Date();
+			var dateFrom = d.toISOString();
+
+			d.setHours(d.getHours() + 1)
+			var dateTo = d.toISOString();
+
+			var booking = {
+				"date-from" : dateFrom,
+				"date-to" : dateTo,
+				"subject" : "Test",
+				"body" : "This is a test"
+			};
+
+			// And we are publishing it!
+			this.publishNewBooking(booking);
+		}
+	}
+	
+})();	
+				</code>
+			</pre>
+		</div>
+	</div>
+	<div id="moduleB" class="panel module">
+		<h2>Module B</h2>
+		<p>
+			I'm listening for the topic "calendar.data.new"!
+		</p>
+		<pre class="result"><code class="json">Still waiting...</code></pre>
+		<div class="sourcePane">
+			<button type="button" class="btn-small" onclick="toggle('moduleb_code')">See my code</button>
+			<pre id="moduleb_code" class="source">
+				<code class="javascript">
+var ModuleB = (function(){
+	
+	return new function(){
+		// message handler function
+		this.updateUI = function(data){
+			// do some important UI stuff, in this example we'll just display as JSON
+			document.querySelector("#moduleB .result").innerHTML = JSON.stringify(data, null,'\t');
+		}
+
+		// Get the global Singleton instance object
+		// You can also use NanoQueue.getInstance()
+		this.q = _Q.getInstance();
+
+		// Subscribe to the specified topic, supplying the callback
+		this.q.subscribeTo("calendar.data.new", this.updateUI);
+		
+	}
+
+})();
+				</code>
+			</pre>
+	</div>
+</body>
+</html>
