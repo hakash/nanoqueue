@@ -1,0 +1,4 @@
+[[redirects]]
+from = "http://nanoqueue.dittdesign.com/*"
+to = "https://nanoqueue.dittdesign.com/:splat"
+status = 301
