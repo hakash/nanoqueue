@@ -16,6 +16,8 @@
 	<script>
 		function toggle(target){
 			var element = document.getElementById(target);
+			var url = element.getAttribute("data-url");
+			
 			var state = window.getComputedStyle(element).getPropertyValue("display");
 			if(state === "none"){
 				element.style.display = "block";
@@ -52,15 +54,21 @@
 		<button type="button" onclick="ModuleA.doStuff()">Do Stuff</button>
 		<div class="sourcePane">
 			<button type="button" class="btn-small" onclick="toggle('modulea_code')">See my code</button>
-			<pre id="modulea_code" class="source">
+			<pre id="modulea_code" class="source" data-url="modulea.js">
 				<code class="javascript">
-var ModuleA = (function(){
-	
-	return new function(){
+(function(){
 
-		// Get the global Singleton instance object
-		// You can also use NanoQueue.getInstance()
-		this.q = _Q.getInstance();
+	"use strict";
+		
+	if(typeof window._Q === "undefined"){
+		throw new Error("NanoQueue not found.");
+	}
+
+	// Get the global Singleton instance object
+	// You can also use NanoQueue.getInstance()
+	var q = window._Q.getInstance();
+	
+	return function(){
 
 		this.publishNewBooking = function(booking){
 
@@ -73,8 +81,8 @@ var ModuleA = (function(){
 			};
 
 			// Publish to the specified topic, supplying the data
-			this.q.publishTo("calendar.data.new", message);	
-		}
+			q.publishTo("calendar.data.new", message);	
+		};
 
 		this.doStuff = function(){
 			// Do some useful stuff to the input and build an object to share
@@ -82,7 +90,7 @@ var ModuleA = (function(){
 			var d = new Date();
 			var dateFrom = d.toISOString();
 
-			d.setHours(d.getHours() + 1)
+			d.setHours(d.getHours() + 1);
 			var dateTo = d.toISOString();
 
 			var booking = {
@@ -94,8 +102,8 @@ var ModuleA = (function(){
 
 			// And we are publishing it!
 			this.publishNewBooking(booking);
-		}
-	}
+		};
+	};
 	
 })();	
 				</code>
@@ -110,29 +118,51 @@ var ModuleA = (function(){
 		<pre class="result"><code class="json">Still waiting...</code></pre>
 		<div class="sourcePane">
 			<button type="button" class="btn-small" onclick="toggle('moduleb_code')">See my code</button>
-			<pre id="moduleb_code" class="source">
+			<pre id="moduleb_code" class="source" data-url="moduleb.js">
 				<code class="javascript">
-var ModuleB = (function(){
+(function(){
+
+	"use strict";
 	
-	return new function(){
+	if(typeof window._Q === "undefined"){
+		throw new Error("NanoQueue not found.");
+	}
+
+	// Get the global Singleton instance object
+	// You can also use NanoQueue.getInstance()
+	var q = window._Q.getInstance();
+
+	
+	return function(){
 		// message handler function
 		this.updateUI = function(data){
-			// do some important UI stuff, in this example we'll just display as JSON
-			document.querySelector("#moduleB .result").innerHTML = JSON.stringify(data, null,'\t');
-		}
 
-		// Get the global Singleton instance object
-		// You can also use NanoQueue.getInstance()
-		this.q = _Q.getInstance();
+			var selector = "#moduleB .result code";
+			var encodedData = JSON.stringify(data, null,'\t');
+			// do some important UI stuff, in this example we'll just display as JSON
+			document.querySelector(selector).innerHTML = encodedData;
+			
+			// notify the world that we updated someting
+			var msg = {
+				node : {
+					selector : selector,
+					newValue : encodedData
+				},
+				canHighlight : true
+			};
+			
+			q.publishTo("dom.node.change", msg);
+		};
 
 		// Subscribe to the specified topic, supplying the callback
-		this.q.subscribeTo("calendar.data.new", this.updateUI);
+		q.subscribeTo("calendar.data.new", this.updateUI);
 		
-	}
+	};
 
 })();
 				</code>
 			</pre>
+		</div>
 	</div>
 </body>
 </html>

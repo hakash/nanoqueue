@@ -1,7 +1,17 @@
+window.nqmodules.ModuleB = (function(){
 
-var ModuleB = (function(){
+	"use strict";
+	
+	if(typeof window._Q === "undefined"){
+		throw new Error("NanoQueue not found.");
+	}
 
-	return new function(){
+	// Get the global Singleton instance object
+	// You can also use NanoQueue.getInstance()
+	var q = window._Q.getInstance();
+
+	
+	return function(){
 		// message handler function
 		this.updateUI = function(data){
 
@@ -11,7 +21,7 @@ var ModuleB = (function(){
 			document.querySelector(selector).innerHTML = encodedData;
 			
 			// notify the world that we updated someting
-			var data = {
+			var msg = {
 				node : {
 					selector : selector,
 					newValue : encodedData
@@ -19,16 +29,12 @@ var ModuleB = (function(){
 				canHighlight : true
 			};
 			
-			_Q.getInstance().publishTo("dom.node.change", data);
-		}
-
-		// Get the global Singleton instance object
-		// You can also use NanoQueue.getInstance()
-		this.q = _Q.getInstance();
+			q.publishTo("dom.node.change", msg);
+		};
 
 		// Subscribe to the specified topic, supplying the callback
-		this.q.subscribeTo("calendar.data.new", this.updateUI);
+		q.subscribeTo("calendar.data.new", this.updateUI);
 		
-	}
+	};
 
 })();
