@@ -51,5 +51,5 @@
 	}
 	
 	var mod = new ModuleA(_Q);
-	_Q.regsiterModule(mod.name, mod);
+	_Q.registerModule(mod.name, mod);
 })();
