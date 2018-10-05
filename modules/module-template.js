@@ -26,6 +26,6 @@
 		});
 	})();
 	
-	q.regsiterModule(moduleName, module);
+	q.registerModule(moduleName, module);
 	
 })();	
