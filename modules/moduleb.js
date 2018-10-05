@@ -42,6 +42,6 @@
 	}
 	
 	var mod = new ModuleB(_Q);
-	_Q.regsiterModule(mod.name, mod);
+	_Q.registerModule(mod.name, mod);
 	
 })();
