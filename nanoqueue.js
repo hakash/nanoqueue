@@ -13,14 +13,18 @@ window._Q = window.NanoQueue = (function(){
 		
 		unregisterModule( moduleName ){
 			delete this.modules[moduleName];
+			console.log(moduleName);
 		}
 		
 		regsiterModule( moduleName, module){
+			console.log(moduleName);
 			this.modules[moduleName] = module;
 		}
 		
 		getModule(moduleName){
+			console.log(moduleName);
 			var mod = this.modules[moduleName];
+			console.log(mod,mod.doStuff);
 			mod.doStuff();
 			return mod;
 		}

@@ -1,5 +1,5 @@
 (function(){
-	return new function(){
+	return function(){
 		// message handler function
 		this.hightlightBlock = function(data){
 
@@ -12,7 +12,7 @@
 
 		// Get the global Singleton instance object
 		// You can also use NanoQueue.getInstance()
-		this.q = _Q.getInstance();
+		this.q = window._Q;
 
 		// Subscribe to the specified topic, supplying the callback
 		this.q.subscribeTo("dom.node.change", this.hightlightBlock);
