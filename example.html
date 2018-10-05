@@ -4,15 +4,15 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<script src="nanoqueue.js"></script>
-	<script src="modulea.js"></script>
-	<script src="moduleb.js"></script>
-	<script src="hljs-module.js"></script>
 	<title>NanoQueue Example</title>
 	<link rel="stylesheet" href="styles.css">
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/sunburst.min.css">
 	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-	<script>hljs.initHighlightingOnLoad();</script>
+	<script>//hljs.initHighlightingOnLoad();</script>
+	<script src="nanoqueue.js"></script>
+	<script src="modulea.js"></script>
+	<script src="moduleb.js"></script>
+	<script src="hljs-module.js"></script>
 	<script>
 		function getFile(file, callback){
 			var xhr = new XMLHttpRequest();
@@ -63,7 +63,7 @@
 		<p>
 			I'm publishing to the topic "calendar.data.new"!
 		</p>
-		<button type="button" onclick="_Q.getModule('ModuleA').doStuff">Do Stuff</button>
+		<button type="button" onclick="_Q.getModule('ModuleA').doStuff()">Do Stuff</button>
 		<div class="sourcePane">
 			<button type="button" class="btn-small" onclick="toggle('modulea_code')">See my code</button>
 			<pre id="modulea_code" class="source" data-url="modulea.js">
@@ -82,7 +82,7 @@ Loading ...
 		<div class="sourcePane">
 			<button type="button" class="btn-small" onclick="toggle('moduleb_code')">See my code</button>
 			<pre id="moduleb_code" class="source" data-url="moduleb.js">
-				<code class="javascript">
+				<code class="language-js">
 Loading ...
 				</code>
 			</pre>
@@ -92,12 +92,21 @@ Loading ...
 	
 		(function(){
 			var elements = document.querySelectorAll("pre[class='source'][data-url]");
-			console.log(elements);
 			elements.forEach((element) => {
 				getFile(element.getAttribute("data-url"), data => {
+					var selector = "#" + element.id + " code";
 					var child = element.querySelector("code");
 					child.innerText = data;
-					_Q.publishTo("dom.node.change",child);
+
+					var msg = {
+						node : {
+							selector : selector,
+							newValue : ""
+						},
+						canHighlight : true
+					};
+
+					_Q.publishTo("dom.node.change",msg);
 				});
 			});
 		})();
