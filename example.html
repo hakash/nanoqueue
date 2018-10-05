@@ -97,6 +97,7 @@ Loading ...
 				getFile(element.getAttribute("data-url"), data => {
 					var child = element.querySelector("code");
 					child.innerText = data;
+					_Q.publishTo("dom.node.change",child);
 				});
 			});
 		})();
