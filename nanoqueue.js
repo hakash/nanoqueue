@@ -15,7 +15,7 @@ window._Q = window.NanoQueue = (function(){
 			delete this.modules[moduleName];
 		}
 		
-		regsiterModule( moduleName, module){
+		registerModule( moduleName, module){
 			this.modules[moduleName] = module;
 		}
 		
