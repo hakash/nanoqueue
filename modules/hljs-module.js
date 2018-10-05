@@ -33,6 +33,6 @@
 	}
 
 	var mod = new HighlightJS(_Q, hljs);
-	_Q.regsiterModule(mod.name, mod);
+	_Q.registerModule(mod.name, mod);
 	
 })();	
