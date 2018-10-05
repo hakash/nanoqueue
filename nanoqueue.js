@@ -22,10 +22,7 @@ window._Q = window.NanoQueue = (function(){
 		}
 		
 		getModule(moduleName){
-			console.log(moduleName);
 			var mod = this.modules[moduleName];
-			console.log(mod,mod.doStuff);
-			mod.doStuff();
 			return mod;
 		}
 		
