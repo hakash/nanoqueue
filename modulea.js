@@ -11,7 +11,7 @@
 		constructor(nanoqueue){
 			this.q = nanoqueue;
 			
-			this.name = typeof this;
+			this.name = this.constructor.name;
 		}
 
 		publishNewBooking(booking){
@@ -29,6 +29,7 @@
 		}
 
 		doStuff(){
+
 			// Do some useful stuff to the input and build an object to share
 			// lets pretend we have gotten som data from a calendar service
 			var d = new Date();

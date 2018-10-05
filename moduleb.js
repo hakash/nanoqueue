@@ -12,10 +12,10 @@
 			this.q = nanoqueue;
 			
 			// Using the class name for the module name, feel free to use something else. 
-			this.name = typeof this;
+			this.name = this.constructor.name;
 			
 			// Subscribe to the specified topic, supplying the callback
-			this.q.subscribeTo("calendar.data.new", this.updateUI);
+			this.q.subscribeTo("calendar.data.new", this.updateUI.bind(this));
 
 		}
 		
