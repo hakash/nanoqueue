@@ -10,9 +10,9 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 	<script>//hljs.initHighlightingOnLoad();</script>
 	<script src="nanoqueue.js"></script>
-	<script src="modulea.js"></script>
-	<script src="moduleb.js"></script>
-	<script src="hljs-module.js"></script>
+	<script src="modules/modulea.js"></script>
+	<script src="modules/moduleb.js"></script>
+	<script src="modules/hljs-module.js"></script>
 	<script>
 		function getFile(file, callback){
 			var xhr = new XMLHttpRequest();
@@ -23,7 +23,7 @@
 				}
 			}
 			
-			xhr.open("GET",file);
+			xhr.open("GET",'modules/' + file);
 			
 			xhr.send();
 		}
