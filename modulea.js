@@ -1,12 +1,20 @@
-var ModuleA = (function(){
+(function(){
 
-	return new function(){
+	"use strict";
+		
+	if(typeof _Q === "undefined"){
+		throw new Error("NanoQueue not found.");
+	}
+	
+	class ModuleA {
+		
+		constructor(nanoqueue){
+			this.q = nanoqueue;
+			
+			this.name = typeof this;
+		}
 
-		// Get the global Singleton instance object
-		// You can also use NanoQueue.getInstance()
-		this.q = _Q.getInstance();
-
-		this.publishNewBooking = function(booking){
+		publishNewBooking(booking){
 
 			// Sample standardized format for new calendar bookings messages
 			var message = {
@@ -20,13 +28,13 @@ var ModuleA = (function(){
 			this.q.publishTo("calendar.data.new", message);	
 		}
 
-		this.doStuff = function(){
+		doStuff(){
 			// Do some useful stuff to the input and build an object to share
 			// lets pretend we have gotten som data from a calendar service
 			var d = new Date();
 			var dateFrom = d.toISOString();
 
-			d.setHours(d.getHours() + 1)
+			d.setHours(d.getHours() + 1);
 			var dateTo = d.toISOString();
 
 			var booking = {
@@ -41,4 +49,6 @@ var ModuleA = (function(){
 		}
 	}
 	
-})();	
+	var mod = new ModuleA(_Q);
+	_Q.regsiterModule(mod.name, mod);
+})();
