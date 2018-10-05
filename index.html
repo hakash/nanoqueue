@@ -53,12 +53,8 @@
 		<p>A module could use it like this:</p>
 <pre>
 <code class="javascript">var ModuleA = function(){
-
-	// Get the global Singleton instance object
-	var q = NanoQueue.getInstance();
-
 	// Subscribe to the specified topic, supplying the callback
-	q.subscribeTo("calendar.data.new", this.updateUI);
+	_Q.subscribeTo("calendar.data.new", this.updateUI);
 	
 	// message handler function
 	var updateUI = function(data){
@@ -70,10 +66,6 @@
 <p>Or:</p>
 <pre>
 <code class="javascript">var ModuleB = function(){
-
-	// Get the global Singleton instance object
-	var q = NanoQueue.getInstance();
-
 	var doStuff = function(someInput){
 
 		// Do some useful stuff to the input and build an object to share
@@ -86,9 +78,11 @@
 		};
 
 		// Publish to the specified topic, supplying the data
-		q.publishTo("calendar.data.new", message);	
+		_Q.publishTo("calendar.data.new", message);	
 	}
 }
+
+ModuleB.doStuff("Write some code");
 </code></pre>
 	</div>
 </body>
