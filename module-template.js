@@ -6,15 +6,13 @@
 		throw new Error("NanoQueue not found.");
 	}
 
-	// Get the global Singleton instance object
-	// You can also use NanoQueue.getInstance()
-	var q = window._Q.getInstance();
+	var q = window._Q;
 	
 	//Change this to be your unique module name
 	var moduleName = "My Module Name";
 	
 	// Flesh this out with your logic. Sample methods are provided
-	var module = function(){
+	var module = (function(){
 
 		this.publishExample = function(){
 			// Publish to the specified topic, supplying the data
@@ -26,7 +24,7 @@
 			// Do some awesome stuff here :)
 			console.log("Got data: " + data);
 		});
-	};
+	})();
 	
 	q.regsiterModule(moduleName, module);
 	

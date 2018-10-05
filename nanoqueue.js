@@ -1,14 +1,6 @@
 window._Q = window.NanoQueue = (function(){
 
 	"use strict";
-
-	// Singleton setup section
-	var instance;
-
-	function createInstance(){
-		return new _Q();
-	} 
-
 	
 	//inner object section
 	class _Q {
@@ -21,14 +13,20 @@ window._Q = window.NanoQueue = (function(){
 		
 		unregisterModule( moduleName ){
 			delete this.modules[moduleName];
+			console.log(moduleName);
 		}
 		
 		regsiterModule( moduleName, module){
+			console.log(moduleName);
 			this.modules[moduleName] = module;
 		}
 		
-		get module(moduleName){
-			return this.modules[moduleName];
+		getModule(moduleName){
+			console.log(moduleName);
+			var mod = this.modules[moduleName];
+			console.log(mod,mod.doStuff);
+			mod.doStuff();
+			return mod;
 		}
 		
 		subscribeTo( topic, action, signature ) {
@@ -58,7 +56,8 @@ window._Q = window.NanoQueue = (function(){
 			var actions = this.queues[topic];
 			for (var action in actions) {
 				if (actions.hasOwnProperty(action)) {
-					actions[action](data);
+					// Use setTimeout to unblock thread if actions are many or long running
+					setTimeout(actions[action](data),0); 
 				}
 			}
 		}
@@ -69,14 +68,7 @@ window._Q = window.NanoQueue = (function(){
 		}
 
 	}
-	
-	return {
-		getInstance : function(){
-			if(!instance){
-				instance = createInstance();
-			}
-			return instance;
-		}
-	};
+
+	return new _Q();
 
 })();
