@@ -1,6 +1,6 @@
 # NanoQueue
 
-Minimal Pub/Sub Message Broker and Module Registry for messaging between components on a page. See [https://nanoqueue.dittdesign.com](https://nanoqueue.dittdesign.com/example1.html) for a live example usage.
+Minimal Pub/Sub Message Broker and Module Registry for messaging between components on a page. See [https://nanoqueue.dittdesign.com](https://nanoqueue.dittdesign.com/example.html) for a live example usage.
 ___
 
 ## Introduction
